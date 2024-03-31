@@ -1,9 +1,0 @@
-package com.mohamedabdelhamid.demo.model;
-
-public class Task {
-    private Long id;
-    private String title;
-    private String description;
-    
-    // Getters and setters
-}
