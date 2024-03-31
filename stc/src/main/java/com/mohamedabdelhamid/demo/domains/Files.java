@@ -8,6 +8,7 @@ public class Files {
     private Long id;
     
     @Lob
+    @Column(name = "file_binary")
     private byte[] binary;
     
     @ManyToOne
