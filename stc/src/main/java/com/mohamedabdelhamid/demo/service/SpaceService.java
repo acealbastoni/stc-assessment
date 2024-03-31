@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mohamedabdelhamid.demo.domains.PermissionGroup;
 import com.mohamedabdelhamid.demo.domains.Space;
@@ -13,7 +12,8 @@ import com.mohamedabdelhamid.demo.dto.UserDto;
 import com.mohamedabdelhamid.demo.repository.PermissionGroupRepository;
 import com.mohamedabdelhamid.demo.repository.SpaceRepository;
 
-//SpaceService.java
+import jakarta.transaction.Transactional;
+
 @Service
 public class SpaceService {
  @Autowired
