@@ -14,17 +14,28 @@ public class PermissionGroup {
     
     @OneToMany(mappedBy = "permissionGroup")
     private Set<User> users = new HashSet<>();
+    
 
-    public PermissionGroup(Long id, String name, Set<User> users) {
+    @Column(name = "group_name")
+    private String groupName;
+    
+    @OneToMany(mappedBy = "permissionGroup", cascade = CascadeType.ALL)
+    private Set<Permissions> permissions;
+
+	public PermissionGroup(Long id, String name, Set<User> users, String groupName, Set<Permissions> permissions) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.users = users;
+		this.groupName = groupName;
+		this.permissions = permissions;
 	}
-    public PermissionGroup() {
+
+	public PermissionGroup() {
 
 	}
 
+    
     
 	public Long getId() {
 		return id;
@@ -46,52 +57,37 @@ public class PermissionGroup {
 		return users;
 	}
 
+
 	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
 
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
+	public Set<Permissions> getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(Set<Permissions> permissions) {
+		this.permissions = permissions;
+	}
 	
-    
-    
-//    
-//    private String groupName;
-//    
-//    @OneToMany(mappedBy = "permissionGroup")
-//    private Set<Item> items;
-//
-//    // Constructors, getters, and setters
-//	public PermissionGroup(Long id, String groupName, Set<Item> items) {
-//		super();
-//		this.id = id;
-//		this.groupName = groupName;
-//		this.items = items;
-//	}
-//
-//	public Long getId() {
-//		return id;
-//	}
-//
-//	public void setId(Long id) {
-//		this.id = id;
-//	}
-//
-//	public String getGroupName() {
-//		return groupName;
-//	}
-//
-//	public void setGroupName(String groupName) {
-//		this.groupName = groupName;
-//	}
-//
-//	public Set<Item> getItems() {
-//		return items;
-//	}
-//
-//	public void setItems(Set<Item> items) {
-//		this.items = items;
-//	}
-//    
-//    
-//    
+	
+	 public void addUserWithViewAccess(User user) {
+	        UserPermission userPermission = new UserPermission(user, PermissionLevel.VIEW);
+	        userPermissions.add(userPermission);
+	    }
+     
+	 public void addUserWithEditAccess(User user) {
+	        UserPermission userPermission = new UserPermission(user, PermissionLevel.EDIT);
+	        userPermissions.add(userPermission);
+	    }
+
     
 }

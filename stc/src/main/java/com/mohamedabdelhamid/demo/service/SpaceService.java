@@ -11,6 +11,7 @@ import com.mohamedabdelhamid.demo.domains.User;
 import com.mohamedabdelhamid.demo.dto.UserDto;
 import com.mohamedabdelhamid.demo.repository.PermissionGroupRepository;
 import com.mohamedabdelhamid.demo.repository.SpaceRepository;
+import com.mohamedabdelhamid.demo.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -45,4 +46,45 @@ public class SpaceService {
      
      return spaceRepository.save(space);
  }
+ 
+
+ @Autowired
+ private UserRepository userRepository;
+
+ public Space createSpace(String spaceName) {
+     // Create the space
+     Space space = new Space();
+     space.setName(spaceName);
+     return spaceRepository.save(space);
+ }
+
+ public PermissionGroup assignAdminGroup(Space space) {
+     // Create admin permission group and assign it to the space
+     PermissionGroup adminGroup = new PermissionGroup();
+     adminGroup.setGroupName("admin");
+     adminGroup.setSpace(space);
+     return permissionGroupRepository.save(adminGroup);
+ }
+
+ public void addUserWithViewAccess(PermissionGroup group, String userEmail) {
+     // Add user to the permission group with VIEW access
+     User user = userRepository.findByEmail(userEmail);
+     if (user != null) {
+         group.addUserWithViewAccess(user);
+         permissionGroupRepository.save(group);
+     }
+ }
+
+ public void addUserWithEditAccess(PermissionGroup group, String userEmail) {
+     // Add user to the permission group with EDIT access
+     User user = userRepository.findByEmail(userEmail);
+     if (user != null) {
+         group.addUserWithEditAccess(user);
+         permissionGroupRepository.save(group);
+     }
+ }
+
+ 
+ 
+ 
 }

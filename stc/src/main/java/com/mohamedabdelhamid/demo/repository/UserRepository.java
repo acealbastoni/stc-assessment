@@ -7,4 +7,5 @@ import com.mohamedabdelhamid.demo.domains.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+	   User findByEmail(String userEmail);
 }
