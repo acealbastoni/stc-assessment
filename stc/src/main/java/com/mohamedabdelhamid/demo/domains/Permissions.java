@@ -1,58 +1,65 @@
 package com.mohamedabdelhamid.demo.domains;
+
+
 import jakarta.persistence.*;
 @Entity
 public class Permissions {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	 @Id
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private Long id;
 
-	private String userEmail;
+	    @ManyToOne
+	    @JoinColumn(name = "user_id")
+	    private User user;
 
-	private String permissionLevel;
+	    @Enumerated(EnumType.STRING)
+	    @Column(name = "permission_level")
+	    private PermissionLevel permissionLevel;
 
-	@ManyToOne
-	@JoinColumn(name = "group_id")
-	private PermissionGroup group;
+	    @ManyToOne
+	    @JoinColumn(name = "group_id")
+	    private PermissionGroup group;
 
-	// Constructors, getters, and setters
-	public Permissions(Long id, String userEmail, String permissionLevel, PermissionGroup group) {
-		super();
-		this.id = id;
-		this.userEmail = userEmail;
-		this.permissionLevel = permissionLevel;
-		this.group = group;
-	}
+	    // Constructors
+	    public Permissions() {
+	    }
 
-	public Long getId() {
-		return id;
-	}
+	    public Permissions(User user, PermissionLevel permissionLevel) {
+	        this.user = user;
+	        this.permissionLevel = permissionLevel;
+	    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+		public Long getId() {
+			return id;
+		}
 
-	public String getUserEmail() {
-		return userEmail;
-	}
+		public void setId(Long id) {
+			this.id = id;
+		}
 
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
+		public User getUser() {
+			return user;
+		}
 
-	public String getPermissionLevel() {
-		return permissionLevel;
-	}
+		public void setUser(User user) {
+			this.user = user;
+		}
 
-	public void setPermissionLevel(String permissionLevel) {
-		this.permissionLevel = permissionLevel;
-	}
+		public PermissionLevel getPermissionLevel() {
+			return permissionLevel;
+		}
 
-	public PermissionGroup getGroup() {
-		return group;
-	}
+		public void setPermissionLevel(PermissionLevel permissionLevel) {
+			this.permissionLevel = permissionLevel;
+		}
 
-	public void setGroup(PermissionGroup group) {
-		this.group = group;
-	}
+		public PermissionGroup getGroup() {
+			return group;
+		}
 
+		public void setGroup(PermissionGroup group) {
+			this.group = group;
+		}
+	    
+	
 }

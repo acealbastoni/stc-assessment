@@ -1,93 +1,97 @@
 package com.mohamedabdelhamid.demo.domains;
+
 import java.util.HashSet;
 import java.util.Set;
-import jakarta.persistence.*;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "permission_groups")
 public class PermissionGroup {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    private String name;
-    
-    @OneToMany(mappedBy = "permissionGroup")
-    private Set<User> users = new HashSet<>();
-    
 
-    @Column(name = "group_name")
+    @Column(name = "group_name", nullable = false)
     private String groupName;
-    
-    @OneToMany(mappedBy = "permissionGroup", cascade = CascadeType.ALL)
-    private Set<Permissions> permissions;
 
-	public PermissionGroup(Long id, String name, Set<User> users, String groupName, Set<Permissions> permissions) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.users = users;
-		this.groupName = groupName;
-		this.permissions = permissions;
-	}
-
-	public PermissionGroup() {
-
-	}
-
-    
-    
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Set<User> getUsers() {
-		return users;
-	}
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Permissions> permissions = new HashSet<>();
 
 
-	public void setUsers(Set<User> users) {
-		this.users = users;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "space_id")
+    private Space space;
 
-	public String getGroupName() {
-		return groupName;
-	}
+    // Constructors, getters, and setters
 
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
+    public PermissionGroup() {
+    }
 
-	public Set<Permissions> getPermissions() {
-		return permissions;
-	}
+    public PermissionGroup(String groupName) {
+        this.groupName = groupName;
+    }
 
-	public void setPermissions(Set<Permissions> permissions) {
-		this.permissions = permissions;
-	}
-	
-	
-	 public void addUserWithViewAccess(User user) {
-	        UserPermission userPermission = new UserPermission(user, PermissionLevel.VIEW);
-	        userPermissions.add(userPermission);
-	    }
-     
-	 public void addUserWithEditAccess(User user) {
-	        UserPermission userPermission = new UserPermission(user, PermissionLevel.EDIT);
-	        userPermissions.add(userPermission);
-	    }
+    // Getters and setters
 
-    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public Space getSpace() {
+        return space;
+    }
+
+    public void setSpace(Space space) {
+        this.space = space;
+    }
+    public Set<Permissions> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Set<Permissions> permissions) {
+        this.permissions = permissions;
+    }
+
+ // Method to add a user with edit access
+    public void addUserWithEditAccess(User user) {
+        Permissions permission = new Permissions(user, PermissionLevel.EDIT);
+        permission.setGroup(this);
+        permissions.add(permission);
+    }
+ // Method to add a user with view access
+    public void addUserWithViewAccess(User user) {
+        Permissions permission = new Permissions(user, PermissionLevel.VIEW);
+        permission.setGroup(this);
+        permissions.add(permission);
+    }
+    public void addUser(User user) {
+        Permissions permission = new Permissions(user, PermissionLevel.VIEW); // Default permission level is VIEW
+        permission.setGroup(this);
+        permissions.add(permission);
+    }
+
 }

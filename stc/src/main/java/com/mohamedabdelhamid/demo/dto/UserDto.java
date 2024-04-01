@@ -1,5 +1,7 @@
 package com.mohamedabdelhamid.demo.dto;
 
+import com.mohamedabdelhamid.demo.enums.AccessLevel;
+
 public class UserDto {
     private String email;
     private String accessLevel;
@@ -8,13 +10,14 @@ public class UserDto {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public UserDto(String email, String accessLevel) {
+	public UserDto(String email, AccessLevel accessLevel) {
 		super();
 		this.email = email;
-		this.accessLevel = accessLevel;
+		this.accessLevel = accessLevel.toString();
 	}
     
     
+
 	public String getEmail() {
 		return email;
 	}
